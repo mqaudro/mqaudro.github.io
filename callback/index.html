@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<title>Tesla OAuth - codice di autorizzazione</title>
+<style>
+  body { font-family: system-ui, sans-serif; max-width: 640px; margin: 60px auto; padding: 0 20px; line-height: 1.5; }
+  code { background: #f0f0f0; padding: 2px 6px; border-radius: 4px; word-break: break-all; }
+  .box { background: #f7f7f7; border: 1px solid #ddd; border-radius: 8px; padding: 16px; margin-top: 16px; }
+  button { margin-top: 10px; padding: 8px 14px; cursor: pointer; }
+</style>
+</head>
+<body>
+<h1>Autorizzazione completata</h1>
+<p>Copia il valore qui sotto e incollalo nella chat con Claude:</p>
+<div class="box">
+  <strong>code:</strong><br>
+  <code id="code">(nessun parametro "code" trovato nell'URL)</code>
+  <br><br>
+  <button onclick="copyCode()">Copia il code</button>
+</div>
+<p style="margin-top:20px;color:#666;font-size:0.9em">Se vedi un parametro "error" invece che "code", qualcosa è andato storto nell'autorizzazione: riprova dal link di login.</p>
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const code = params.get('code');
+  const error = params.get('error');
+  const el = document.getElementById('code');
+  if (code) {
+    el.textContent = code;
+  } else if (error) {
+    el.textContent = 'ERRORE: ' + error + ' - ' + (params.get('error_description') || '');
+  }
+  function copyCode() {
+    navigator.clipboard.writeText(el.textContent).catch(()=>{});
+  }
+</script>
+</body>
+</html>
